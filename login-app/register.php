@@ -28,7 +28,7 @@
                 if(mysqli_query($conn, $sql)) {
                     $_SESSION['logged_in'] = true;
                     $_SESSION['username'] = $username;
-                    header("Location: admin.php");
+                    redirect("admin.php");
                     exit;
                 } else {
                     $error = "SOMETHING HAPPENED no data inserted, error: " . mysqli_error($conn);
