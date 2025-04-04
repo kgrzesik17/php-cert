@@ -37,25 +37,26 @@
 
 ?>
 <div class="container">
-    <h2>Login</h2>
+    <div class="form-container">
+        <form action="" method="POST">
+            <h2>Login</h2>
+            <?php if($error): ?>
+                <p style="color: red;">
+                    <?php echo $error; ?>
+                </p>
+            <?php endif; ?>
 
-    <?php if($error): ?>
-        <p style="color: red;">
-            <?php echo $error; ?>
-        </p>
-    <?php endif; ?>
-
-    <form action="" method="POST">
-        <label for="username">Username</label><br>
-        <input type="text" name="username" required><br><br>
-
-
-        <label for="password">Password:</label><br>
-        <input type="password" name="password" required><br><br>
+            <label for="username">Username</label><br>
+            <input type="text" name="username" required><br><br>
 
 
-        <input type="submit" value="Register">
-    </form>
+            <label for="password">Password:</label><br>
+            <input type="password" name="password" required><br><br>
+
+
+            <input type="submit" value="Login">
+        </form>
+    </div>
 </div>
 
 <?php

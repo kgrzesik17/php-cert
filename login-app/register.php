@@ -15,11 +15,8 @@
             $error = "Passwords do not match";
         } else {
 
-            $sql = "SELECT * FROM users WHERE username='$username' LIMIT 1";
-            $result = mysqli_query($conn, $sql);
-
             // check if username already exists
-            if(mysqli_num_rows($result) === 1) {
+            if(user_exists($conn, $username)) {
                 $error = "Username already exists, please choose another";
             } else {
 
@@ -29,8 +26,10 @@
 
                 // check if data was succesfully inserted
                 if(mysqli_query($conn, $sql)) {
-                    echo "DATA INSERTED";
-
+                    $_SESSION['logged_in'] = true;
+                    $_SESSION['username'] = $username;
+                    header("Location: admin.php");
+                    exit;
                 } else {
                     $error = "SOMETHING HAPPENED no data inserted, error: " . mysqli_error($conn);
                 }
@@ -39,31 +38,31 @@
     }
 ?>
 <div class="container">
-    <h2>Register</h2>
+    <div class="form-container">
+        <form action="" method="POST">
+            <h2>Create your Account</h2>
 
-    <?php if($error): ?>
+            <?php if($error): ?>
+                <p style="color: red;">
+                    <?php echo $error; ?>
+                </p>
+            <?php endif; ?>
 
-        <p style="color: red;">
-            <?php echo $error; ?>
-        </p>
+            <label for="username">Username:</label>
+            <input type="text" value="<?php echo isset($username) ? $username : '' ?>" placeholder="Enter your username" name="username" id="username" required>
 
-    <?php endif; ?>
+            <label for="email">Email:</label>
+            <input type="email" value="<?php echo isset($email) ? $email : '' ?>" placeholder="Enter your email" name="email" id="email" required>
 
-    <form action="" method="POST">
-        <label for="username">Username:</label><br>
-        <input type="text" name="username" id="username" required><br><br>
+            <label for="password">Password:</label>
+            <input type="password" placeholder="Enter your password" name="password" id="password" required>
 
-        <label for="email">Email:</label><br>
-        <input type="email" name="email" id="email" required><br><br>
+            <label for="confirm_password">Confirm password:</label>
+            <input type="password" placeholder="Confirm your password" name="confirm_password" id="confirm_password" required>
 
-        <label for="password">Password:</label><br>
-        <input type="password" name="password" id="password" required><br><br>
-
-        <label for="confirm_password">Confirm password:</label><br>
-        <input type="password" name="confirm_password" id="confirm_password" required><br><br>
-
-        <input type="submit" value="Register">
-    </form>
+            <input type="submit" value="Register">
+        </form>
+    </div>
 </div>
 
 <?php
