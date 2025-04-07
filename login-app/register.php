@@ -1,6 +1,11 @@
 <?php
     include "partials/header.php";
     include "partials/navigation.php";
+    
+    if(is_user_logged_in()) {
+        redirect("admin.php");
+        exit;
+    }
 
     $error = "";
 
@@ -24,8 +29,7 @@
 
                 $sql = "INSERT INTO users (username, password, email) VALUES ('$username', '$password_hash', '$email')";
 
-                // check if data was succesfully inserted
-                if(mysqli_query($conn, $sql)) {
+                if(check_query(create_user($conn, $username, $email, $password))) {
                     $_SESSION['logged_in'] = true;
                     $_SESSION['username'] = $username;
                     redirect("admin.php");

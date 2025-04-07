@@ -3,7 +3,7 @@
     include "partials/navigation.php";
 
     if(is_user_logged_in()) {
-        redirect("login.php");
+        redirect("admin.php");
         exit;
     }
 
