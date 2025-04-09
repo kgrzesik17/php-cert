@@ -3,6 +3,8 @@ include "partials/header.php";
 include "partials/navbar.php";
 include "partials/hero.php";
 
+// TODO: data validation
+
 if(isPostRequest()) {
     $username = getPostData('username');
     $email = getPostData('email');
@@ -16,9 +18,6 @@ if(isPostRequest()) {
         echo "Registration failed";
     }
 }
-
-
-
 ?>
 
 <main class="container my-5">
