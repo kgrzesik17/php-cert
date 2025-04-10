@@ -9,7 +9,7 @@ $articleData = $article->getArticleById($articleId);
 if(isPostRequest()) {
     $title = $_POST['title'];
     $content = $_POST['content'];
-    $author_id = $_POST['user_id'];
+    $author_id = $_SESSION['user_id'];
     $created_at = $_POST['date'];
 
     $imagePath = $article->uploadImage($_FILES['featured_image']);
@@ -48,12 +48,12 @@ if(isPostRequest()) {
             <label for="content" class="form-label">Content *</label>
             <textarea name="content" class="form-control" id="content" rows="10" placeholder="Enter article content" required><?php echo $articleData->content; ?></textarea>
         </div>
-
+        <input name="featured_image" type="file" class="form-control" id="image" placeholder="Enter image URL"><br>
         <?php if(!empty($articleData->image)): ?>
 
         <div class="mb-3">
             <label for="image" class ="form-label">Current Featured Image</label><br>
-            <input name="featured_image" type="file" class="form-control" id="image" placeholder="Enter image URL">
+            
 
             <img class="img-fluid mb-2" style="width: 100px;" src="<?php echo htmlspecialchars($articleData->image)?>" alt="article featured image">
 

@@ -56,6 +56,7 @@ class Article {
                     articles.title, 
                     articles.content,
                     articles.created_at,
+                    articles.image,
                     users.username AS author,
                     users.email AS author_email
                 FROM " . $this->table . " 
@@ -171,5 +172,20 @@ class Article {
         }
 
         $query .= " WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':title', $title);
+        $stmt->bindParam(':content', $content);
+        $stmt->bindParam(':user_id', $author_id);
+        $stmt->bindParam(':created_at', $created_at);
+
+        if($imagePath) {
+            $stmt->bindParam(':image', $imagePath, PDO::PARAM_STR);
+        }
+
+        return $stmt->execute();
+
     }
 }
