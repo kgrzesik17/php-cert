@@ -10,6 +10,7 @@ class Article {
         $this->conn = $database->getConnection();
     }
 
+    // shortens an article
     public function getExcerpt($content, $length = 100)
     {
         if(strlen($content) > $length) {
@@ -19,6 +20,7 @@ class Article {
         return $content;
     }
 
+    // fetches an array of all articles
     public function get_all()
     {
         $query = "SELECT * FROM " . $this->table . " ORDER BY id DESC";
@@ -28,6 +30,7 @@ class Article {
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
+    // fetches an article by its id 
     public function getArticleById($id)
     {
         $query = "SELECT * FROM " . $this->table . " WHERE id = :id LIMIT 1";
@@ -44,6 +47,7 @@ class Article {
         }
     }
 
+    // fetches a full article with its owners id by articles id
     public function getArticleWithOwnerById($id) {
         $query = "SELECT
                     articles.id,
@@ -70,6 +74,7 @@ class Article {
         }
     }
 
+    // fetches an array of articles
     public function getArticlesByUser($user_id)
     {
         $query = "SELECT * FROM articles WHERE user_id = :user_id ORDER BY created_at DESC";
@@ -80,6 +85,7 @@ class Article {
         return $stmt->fetchAll(pdo::FETCH_OBJ);
     }
 
+    // creates an article
     public function create($title, $content, $author_id, $created_at, $image) {
         $query = "INSERT INTO " . $this->table . " (title, content, user_id, created_at, image) VALUES (:title, :content, :user_id, :created_at, :image)";
         $stmt = $this->conn->prepare($query);
@@ -90,5 +96,27 @@ class Article {
         $stmt->bindParam(':image', $image);
 
         return $stmt->execute();
+    }
+
+    // deletes the database record alongside the image linked with it 
+    public function deleteWithImage($id) {
+        $article = $this->getArticleById($id);
+
+        if($article) {
+            if(!empty($article->image) && file_exists($article->image)) {
+                if(!unlink($article->image)) {
+                    return false;
+                }
+            }
+        
+        $query = "DELETE FROM " . $this->table . " WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+        }
+
+        return false;
     }
 }

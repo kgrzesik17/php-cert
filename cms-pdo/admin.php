@@ -5,7 +5,7 @@ include "partials/admin/navbar.php";
 $article = new Article();
 
 $userId = $_SESSION['user_id'];
-$userArticles = $article->getArticlesByUser($userId);
+$userArticles = $article->getArticlesByUser($userId); 
 ?>
 
 <!-- Main Content -->
@@ -22,12 +22,13 @@ $userArticles = $article->getArticlesByUser($userId);
                     <th>Author</th>
                     <th>Published Date</th>
                     <th>Excerpt</th>
-                    <th>Actions</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
-                <?php if(!empty($userArticles)): ?>
-                <?php foreach($userArticles as $articleItem): ?>
+                <?php if(!empty($userArticles)): // check if there are any articles belonging to the user?>
+                <?php foreach($userArticles as $articleItem): // iterate thought all the users articles?>
                 <!-- Article Row -->
                 <tr>
                     <td><?php echo $articleItem->id; ?></td>
@@ -39,7 +40,13 @@ $userArticles = $article->getArticlesByUser($userId);
                     </td>
                     <td>
                         <a href="edit-article.html?id=<?php echo $articleItem->id; ?>" class="btn btn-sm btn-primary me-1">Edit</a>
-                        <button class="btn btn-sm btn-danger" onclick="confirmDelete(1)">Delete</button>
+                    </td>
+                    <td>
+                        <form method="POST" action="<?php echo base_url("delete_article.php"); ?>">
+                            <input name="id" value="<?php echo $articleItem->id; ?>" type="hidden">
+                            <!--button class="btn btn-sm btn-danger" onclick="confirmDelete(1)">Delete</button>-->
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
                     </td>
                 </tr>
                 <?php endforeach; ?>

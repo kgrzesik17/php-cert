@@ -12,23 +12,23 @@ if(isPostRequest()) {
     $targetDir = 'uploads/';
     $error = "";
 
-    if(!is_dir($targetDir)) {
+    if(!is_dir($targetDir)) {  // check if uploads directory exists and if not, create one
         mkdir($targetDir, 0755, true);
     }
     
-    if(isset($_FILES['featured_image']) && $_FILES['featured_image']['error'] === 0) {
+    if(isset($_FILES['featured_image']) && $_FILES['featured_image']['error'] === 0) {  // check if everthing went alrigh with the form
         
-        $targetFile = $targetDir . basename($_FILES['featured_image']['name']);
-        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+        $targetFile = $targetDir . basename($_FILES['featured_image']['name']);  // dir + filename
+        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION)); 
 
-        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif']; 
 
         if(in_array($imageFileType, $allowedTypes)) {
 
-            $uniqueFileName = uniqid() . "_" . time() . "." . $imageFileType;
-            $targetFile = $targetFile . $uniqueFileName;
+            $uniqueFileName = uniqid() . "_" . time() . "." . $imageFileType;  // add an unique id and timestamp to the name to avoid name conflicts
+            $targetFile = $targetFile . $uniqueFileName;  // path/name+random+date.extension
 
-            if(move_uploaded_file($_FILES['featured_image']['tmp_name'], $targetFile)) {
+            if(move_uploaded_file($_FILES['featured_image']['tmp_name'], $targetFile)) {  // move the file from temp to permanent locaiton
                 $imagePath = $targetFile;
             } else {
                 $error = "There was an error uploading the file";
@@ -60,10 +60,6 @@ if(isPostRequest()) {
         <div class="mb-3">
             <label for="date" class="form-label">Published Date *</label>
             <input name="date" type="date" class="form-control" id="date" required>
-        </div>
-        <div class="mb-3">
-            <label for="excerpt" class="form-label">Excerpt *</label>
-            <textarea class="form-control" id="excerpt" rows="3" placeholder="Enter a short excerpt" required></textarea>
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">Content *</label>
