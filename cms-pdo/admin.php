@@ -39,7 +39,7 @@ $userArticles = $article->getArticlesByUser($userId);
                         <?php echo $article->getExcerpt($articleItem->content); ?>
                     </td>
                     <td>
-                        <a href="edit-article.html?id=<?php echo $articleItem->id; ?>" class="btn btn-sm btn-primary me-1">Edit</a>
+                        <a href="edit-article.php?id=<?php echo $articleItem->id; ?>" class="btn btn-sm btn-primary me-1">Edit</a>
                     </td>
                     <td>
                         <form method="POST" action="<?php echo base_url("delete_article.php"); ?>">

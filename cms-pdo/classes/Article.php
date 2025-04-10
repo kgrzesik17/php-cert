@@ -40,11 +40,13 @@ class Article {
 
         $article = $stmt->fetch(PDO::FETCH_OBJ);
 
-        if($article) {
-            return $article;
-        } else {
-            return false;
+        // make sure that user who tries to access the article is the owner
+        if($article) {  
+            if($article->user_id == $_SESSION['user_id']) {
+                return $article;       
+            }
         }
+        redirect('admin.php');
     }
 
     // fetches a full article with its owners id by articles id
@@ -123,5 +125,37 @@ class Article {
         }
 
         return false;
+    }
+
+    public function uploadImage($file) {
+        $targetDir = 'uploads/';
+    
+        if(!is_dir($targetDir)) {  // check if uploads directory exists and if not, create one
+            mkdir($targetDir, 0755, true);
+        }
+        
+        if(isset($file) && $file['error'] === 0) {  // check if everthing went alrigh with the form
+            
+            $targetFile = $targetDir . basename($file['name']);  // dir + filename
+            $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION)); 
+    
+            $allowedTypes = ['jpg', 'jpeg', 'png', 'gif']; 
+    
+            if(in_array($imageFileType, $allowedTypes)) {
+    
+                $uniqueFileName = uniqid() . "_" . time() . "." . $imageFileType;  // add an unique id and timestamp to the name to avoid name conflicts
+                $targetFile = $targetFile . $uniqueFileName;  // path/name+random+date.extension
+    
+                if(move_uploaded_file($file['tmp_name'], $targetFile)) {  // move the file from temp to permanent locaiton
+                    return $targetFile;
+                } else {
+                    return "There was an error uploading the file";
+                }
+            } else {
+                return "Only jpg, jpeg, png, gif files are allowed";
+            }
+        }
+
+        return "";
     }
 }

@@ -8,45 +8,24 @@ if(isPostRequest()) {
     $author_id = $_SESSION['user_id'];
     $created_at = $_POST['date'];
 
-    $imagePath = '';
-    $targetDir = 'uploads/';
-    $error = "";
-
-    if(!is_dir($targetDir)) {  // check if uploads directory exists and if not, create one
-        mkdir($targetDir, 0755, true);
-    }
-    
-    if(isset($_FILES['featured_image']) && $_FILES['featured_image']['error'] === 0) {  // check if everthing went alrigh with the form
-        
-        $targetFile = $targetDir . basename($_FILES['featured_image']['name']);  // dir + filename
-        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION)); 
-
-        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif']; 
-
-        if(in_array($imageFileType, $allowedTypes)) {
-
-            $uniqueFileName = uniqid() . "_" . time() . "." . $imageFileType;  // add an unique id and timestamp to the name to avoid name conflicts
-            $targetFile = $targetFile . $uniqueFileName;  // path/name+random+date.extension
-
-            if(move_uploaded_file($_FILES['featured_image']['tmp_name'], $targetFile)) {  // move the file from temp to permanent locaiton
-                $imagePath = $targetFile;
-            } else {
-                $error = "There was an error uploading the file";
-            }
-        } else {
-            $error = "Only jpg, jpeg, png, gif files are allowed";
-        }
-    }
+    // UPLOADING IMAGE
 
     $article = new Article();
 
-    if($article->create($title, $content, $author_id, $created_at, $imagePath)) {
-        redirect('admin.php');
-        exit;
+    $imagePath = $article->uploadImage($_FILES['featured_image']);
+
+    if(strpos($imagePath, 'error') === false) {
+        if($article->create($title, $content, $author_id, $created_at, $imagePath)) {
+            redirect('admin.php');
+            exit;
+        } else {
+            echo "FAILED CREATING AN ARTICLE";
+        }
     } else {
-        echo "FAILED CREATING AN ARTICLE";
+        echo $imagePath;
     }
 }
+
 ?>
 
 <!-- Main Content -->
