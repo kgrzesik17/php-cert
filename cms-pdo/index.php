@@ -6,8 +6,6 @@ include base_path("partials/hero.php");  // include hero (jumbotron)
 $article = new Article();
 
 $articles = $article->get_all();
-
-var_dump($articles);
 ?>
 
 
