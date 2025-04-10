@@ -158,4 +158,18 @@ class Article {
 
         return "";
     }
+
+    public function update($id, $title, $content, $author_id, $created_at, $imagePath) {
+        $query = "UPDATE " . $this->table . " SET
+                                                title = :title,
+                                                content = :content,
+                                                user_id = :user_id,
+                                                created_at = :created_at";
+
+        if($imagePath) {  // check if there is an image uploaded
+            $query .= ", image = :image";
+        }
+
+        $query .= " WHERE id = :id";
+    }
 }
