@@ -70,8 +70,25 @@ class Article {
         }
     }
 
-    public function formatCreatedAt($date)
+    public function getArticlesByUser($user_id)
     {
-        return date('F j, Y', strtotime($date));
+        $query = "SELECT * FROM articles WHERE user_id = :user_id ORDER BY created_at DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+
+        return $stmt->fetchAll(pdo::FETCH_OBJ);
+    }
+
+    public function create($title, $content, $author_id, $created_at, $image) {
+        $query = "INSERT INTO " . $this->table . " (title, content, user_id, created_at, image) VALUES (:title, :content, :user_id, :created_at, :image)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':title', $title);
+        $stmt->bindParam(':content', $content);
+        $stmt->bindParam(':user_id', $author_id);
+        $stmt->bindParam(':created_at', $created_at);
+        $stmt->bindParam(':image', $image);
+
+        return $stmt->execute();
     }
 }

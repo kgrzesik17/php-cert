@@ -1,7 +1,6 @@
 <?php
 include __DIR__ . "/../../init.php";
-
-echo uploads_url();  // enter main folder here
+checkUserLoggedIn();
 ?>
 
 <!DOCTYPE html>
