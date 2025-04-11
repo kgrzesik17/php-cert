@@ -186,6 +186,38 @@ class Article {
         }
 
         return $stmt->execute();
+    }
 
+    public function generateDummyData($num = 10) {
+        $query = "INSERT INTO " . $this->table . " (title, content, user_id, created_at, image)
+        VALUES (:title, :content, :user_id, :created_at, :image)";
+
+        $stmt = $this->conn->prepare($query);
+
+        $dummy_content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc.";
+        $dummy_image = "https://placehold.co/350x200";
+        $user_id = 14;
+        $created_at = date('Y-m-d');
+
+        for($i = 0; $i < $num; $i++) {
+            $title = $this->randomTitleGenerator();
+
+            $stmt->bindParam(':title', $title);
+            $stmt->bindParam(':content', $dummy_content);
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->bindParam(':created_at', $created_at);
+            $stmt->bindParam(':image', $dummy_image);
+
+            $stmt->execute();
+        }
+
+        return true;
+    }
+
+    public function randomTitleGenerator() {
+        $first = ["Future of ", "Importance of ", "Understanding ", "The power of ", "The benefits of "];
+        $second = ["Technology", "Education", "Healthy Living", "World of Science", "Mental Health", "Positive Thinking", "Freedom"];
+
+        return $first[array_rand($first)] . $second[array_rand($second)];
     }
 }

@@ -12,6 +12,10 @@ $userArticles = $article->getArticlesByUser($userId);
 <main class="container my-5">
     <h2 class="mb-4">Welcome <?php echo $_SESSION['username']; ?> to your Admin Dashboard</h2>
 
+    <form action="create-dummy-articles.php" method="post">
+        <button class="btn btn-primary mb-3" type="submit">Generate Articles</button>
+    </form>
+
     <!-- Articles Table -->
     <div class="table-responsive">
         <table class="table table-bordered table-hover align-middle">
@@ -42,7 +46,7 @@ $userArticles = $article->getArticlesByUser($userId);
                         <a href="edit-article.php?id=<?php echo $articleItem->id; ?>" class="btn btn-sm btn-primary me-1">Edit</a>
                     </td>
                     <td>
-                        <form method="POST" action="<?php echo base_url("delete_article.php"); ?>">
+                        <form onsubmit="confirmDelete(<?php echo $articleItem->id; ?>)" method="POST" action="<?php echo base_url("delete_article.php"); ?>">
                             <input name="id" value="<?php echo $articleItem->id; ?>" type="hidden">
                             <!--button class="btn btn-sm btn-danger" onclick="confirmDelete(1)">Delete</button>-->
                             <button class="btn btn-sm btn-danger">Delete</button>
