@@ -15,7 +15,7 @@ $userArticles = $article->getArticlesByUser($userId);
     <div class="d-flex justify-content-between align-items-center mb-4">
         <form class="d-flex align-items-center" action="<?php echo base_url('create-dummy-articles.php'); ?>" method="post">
             <label class="form-label me-2" for="articleCount">Number of Articles</label>
-            <input id="articleCount" min="1" style="width: 100px;" class="form-control me-2" name="article_count" type="number" value="">
+            <input id="articleCount" min="1" style="width: 100px;" class="form-control me-2" name="article_count" type="number" value="1">
             <button id="articleCount" class="btn btn-primary" type="submit">Generate Articles</button>
         </form>
 
@@ -32,6 +32,7 @@ $userArticles = $article->getArticlesByUser($userId);
         <table class="table table-bordered table-hover align-middle">
             <thead class="table-dark">
                 <tr>
+                    <th><input type="checkbox" id="selectAll"></th>
                     <th>ID</th>
                     <th>Title</th>
                     <th>Author</th>
@@ -39,6 +40,7 @@ $userArticles = $article->getArticlesByUser($userId);
                     <th>Excerpt</th>
                     <th>Edit</th>
                     <th>Delete</th>
+                    <th>AJAX Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,6 +48,7 @@ $userArticles = $article->getArticlesByUser($userId);
                 <?php foreach($userArticles as $articleItem): // iterate thought all the users articles?>
                 <!-- Article Row -->
                 <tr>
+                    <td><input type="checkbox" class="articleCheckbox" value="<?php echo $articleItem->id ?>"></td>
                     <td><?php echo $articleItem->id; ?></td>
                     <td><?php echo $articleItem->title; ?></td>
                     <td><?php echo $_SESSION['username']; ?></td>
@@ -63,6 +66,10 @@ $userArticles = $article->getArticlesByUser($userId);
                             <button class="btn btn-sm btn-danger">Delete</button>
                         </form>
                     </td>
+
+                    <td>
+                        <button data-id="<?php echo $articleItem->id; ?>"class="btn btn-sm btn-danger delete-single">ajax delete</button>
+                    </td>
                 </tr>
                 <?php endforeach; ?>
                 <?php endif; ?>
@@ -70,6 +77,67 @@ $userArticles = $article->getArticlesByUser($userId);
         </table>
     </div>
 </main>
+
+<script>
+    // select or deselect all checkboxes
+    document.getElementById('selectAll').onclick = function() {
+        let checkboxes = document.querySelectorAll('.articleCheckbox');
+
+        for(let checkbox of checkboxes) {
+            checkbox.checked = this.checked;
+        }
+    };
+
+    document.getElementById('deleteSelectedBtn').onclick = function() {
+        let selectedIds = [];
+        let checkboxes = document.querySelectorAll('.articleCheckbox:checked');
+
+        checkboxes.forEach((checkbox) => {
+            selectedIds.push(checkbox.value);
+        })
+
+        if(selectedIds.length === 0) {
+            alert("HEY SELECT 1 AT LEAST");
+            return;
+        }
+
+        if(confirm("Are you sure you want to delete this article")) {
+            sendDeleteRequest(selectedIds);
+        }
+
+    };
+
+    document.querySelectorAll('.delete-single').forEach((button) => {
+        button.onclick = function(){
+            let articleId = this.getAttribute('data-id');
+            
+            if(confirm("Are you sure you want to delete this article " + articleId + '?' )) {
+                sendDeleteRequest([articleId]);
+            }
+        }
+    })
+
+        function sendDeleteRequest(articleIds) {
+            let xhr = new XMLHttpRequest();
+
+            xhr.open('POST', '<?php echo base_url('delete_articles.php'); ?>', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let response = JSON.parse(xhr.responseText);
+
+                    if(response.success) {
+                        alert("WE DID IT and article got deleted");
+                        location.reload();
+                    } else {
+                        alert("FAILED TO DELETE: " + response.message);
+                    }
+                } 
+            }
+
+            xhr.send(JSON.stringify({ article_ids : articleIds }))
+        }
+</script>
 
 <?php
 include "partials/admin/footer.php";
