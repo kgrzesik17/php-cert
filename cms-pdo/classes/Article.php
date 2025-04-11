@@ -220,4 +220,44 @@ class Article {
 
         return $first[array_rand($first)] . $second[array_rand($second)];
     }
+
+    public function reorderAndResetAutoIncrement() {
+
+        try {
+            // DB Transaction
+            $this->conn->beginTransaction();
+
+            $query = "SELECT id FROM " . $this->table;
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $articles = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+            // update each Article IDs sequentially
+            $newId = 1;
+
+            foreach($articles as $article) {
+                $updateQuery = "UPDATE " . $this->table . " SET id = :newId WHERE id = :oldId";
+                $updateStmt = $this->conn->prepare($updateQuery);
+                $updateStmt->bindParam(':newId', $newId, PDO::PARAM_INT);
+                $updateStmt->bindParam(':oldId', $article->id, PDO::PARAM_INT);
+                $updateStmt->execute();
+
+                $newId++;
+            }
+
+            // reset auto_increment
+            $nextAutoIncrementId = $newId;
+            $resetQuery = "ALTER TABLE " . $this->table . " AUTO_INCREMENT = :next_auto_increment_id";
+            $resetStmt = $this->conn->prepare($resetQuery);
+            $resetStmt->bindParam(':next_auto_increment_id', $nextAutoIncrementId, PDO::PARAM_INT);
+            $resetStmt->execute();
+            
+            $this->conn->commit();
+            return true;
+
+        } catch (Exception $exception) {
+            $this->conn->rollBack();
+            throw $exception;
+        }
+    }
 }
