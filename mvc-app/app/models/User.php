@@ -1,7 +1,12 @@
 <?php
 
+// for data stuff
+
 class User {
     public $table = 'users';
+
+    private $uploadDir = "uploads/users";
+
     public $id;
     public $username;
     public $password;
@@ -63,6 +68,32 @@ class User {
         $stmt->bindValue(':id', $userId, PDO::PARAM_INT);
 
         return $stmt->execute();
+    }
+
+    public function handleImageUpload($file) {
+        $maxSize = 5 * 1024 * 1024;  // max file size 5MB
+        $tempLocation = $file['tmp_name'];  // temporary file location
+        
+        if($file['size'] > $maxSize) {  // chec max file size
+            $_SESSION['error'] = "FILE IS TOO BIG";
+            return false;
+        }
+
+        $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $filename = uniqid('user_', true) . '.' . $fileExtension;
+
+        if(!file_exists($this->uploadDir)) {  // make sure files aren't overriden
+            mkdir($this->uploadDir, 0755, true);
+        }
+
+        $filePath = $this->uploadDir . '/' . $filename;
+
+        if(move_uploaded_file($tempLocation, $filePath)) {
+            return $filePath;
+        } else {
+            $_SESSION['error'] == "Failed to upload from user model";
+            return false;
+        }
     }
 
     public function store() {

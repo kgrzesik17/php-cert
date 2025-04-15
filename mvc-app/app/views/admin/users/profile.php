@@ -6,7 +6,7 @@
             <div class="card-body box-profile">
                 <div class="text-center">
                     <img class="profile-user-img img-fluid img-circle"
-                         src="<?php $user->profile_image ?? 'uploads/dummy-profile.png' ?>"
+                         src="<?php echo base_url($user->profile_image) ?? 'uploads/dummy-profile.png' ?>"
                          alt="User profile picture">
                 </div>
 
@@ -48,6 +48,14 @@
     <!-- /.col -->
 
     <div class="col-md-9">
+        <?php if(isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger">
+                <?php 
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                ?>
+            </div>
+        <?php endif; ?>
         <div class="card">
             <div class="card-header p-2">
                 <ul class="nav nav-pills">

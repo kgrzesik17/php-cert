@@ -1,5 +1,7 @@
 <?php
 
+// for dealing with the view
+
 class UserController {
     private $userModel;
 
@@ -41,8 +43,6 @@ class UserController {
         $organization = sanitize($_POST['organization'] ?? '');
         $location = sanitize($_POST['location'] ?? '');
 
-        var_dump($birthday);
-
         $userData = [
             'first_name' => $firstName,
             'last_name' => $lastName,
@@ -54,6 +54,7 @@ class UserController {
         ];
 
         if(isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
+
             $imagePath = $this->userModel->handleImageUpload($_FILES['profile_image']);
 
             if($imagePath) {
@@ -66,13 +67,13 @@ class UserController {
 
         $updateStatus = $this->userModel->update($userId, $userData);
 
-        redirect('admin/users/profile');
+        if($updateStatus) {
+            $_SESSION['message'] = "Profile updated successfully";
+        } else {
+            $_SESSION['error'] = "Failed to update profile";
+        }
 
-        
-    }
-
-    public function handleImageUpload($file) {
-        
+        redirect('/admin/users/profile');
     }
 
     public function showLoginForm() {
