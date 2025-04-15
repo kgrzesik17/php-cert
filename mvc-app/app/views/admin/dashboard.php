@@ -1,2 +1,1 @@
-<?php
-
+HELLO FROM DASHBOARD

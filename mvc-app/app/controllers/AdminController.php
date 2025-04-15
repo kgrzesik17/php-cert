@@ -8,7 +8,7 @@ class AdminController {
 
     public function dashboard() {
         $data = [
-            'title' => 'Admin Page',
+            'title' => 'Dashboard',
             'message' => 'Welcome to the Dashboard'
         ];
 

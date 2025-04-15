@@ -3,14 +3,13 @@
 class HomeController {
     public function index() {
 
-        echo $_SESSION['username'];
-        // $data = [
+        $data = [
 
-        //     "title" => "Home Page",
-        //     "message" => "Welcome to the Home Page",
-        // ];
+            "title" => "Home Page",
+            "message" => "Welcome to the Home Page",
+        ];
 
-        // render('home/index', $data, 'layouts/hero_layout');
+        render('home/index', $data, 'layouts/hero_layout');
     }
 
     public function about() {
@@ -20,8 +19,15 @@ class HomeController {
         ];
 
         render('home/about', $data);
+    }
 
-        require_once __DIR__ . '/../views/home/about.php';
+    public function contact() {
+        $data = [
+            "title" => "Contact Page",
+            "message" => "Welcome to the Contact Page"
+        ];
+
+        render ('home/contact', $data);
     }
 
 }
