@@ -252,11 +252,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
-        <div class="row">
+        
 
           <?php echo $content; ?>
 
-        </div>
+        
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
@@ -294,5 +294,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="<?php echo base_url('plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
 <!-- AdminLTE App -->
 <script src="<?php echo base_url('dist/js/adminlte.min.js'); ?>"></script>
+ 
+<?php
+  if(isset($scripts) && is_array($scripts)) {
+    foreach($scripts as $script) {
+      echo '<script src="' . base_url($script) . '"></script>';
+    }
+  }
+?>
 </body>
 </html>

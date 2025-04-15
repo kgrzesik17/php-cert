@@ -14,6 +14,7 @@ $routes = [
         '/user/register' => 'UserController@showRegisterForm',
         '/user/login' => 'UserController@showLoginForm',
         '/dashboard' => 'AdminController@dashboard',
+        '/admin' => 'AdminController@admin',
     ],
     
     'POST' => [
