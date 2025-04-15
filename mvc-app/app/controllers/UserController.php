@@ -39,8 +39,14 @@ class UserController {
     }
 
     public function showProfile() {
+        $userId = $_SESSION['user_id'];
+        $user = $this->userModel->getUserById($userId);
+
+        var_dump($user);
+
         $data = [
-            'title' => "Profile"
+            'title' => "Profile",
+            'user' => $user,
         ];
 
         render('admin/users/profile', $data, 'layouts/admin_layout');

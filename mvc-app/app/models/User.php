@@ -25,6 +25,15 @@ class User {
         $this->conn = Database::getInstance()->getConnection();
     }
 
+    public function getUserById($userId) {
+        $query = "SELECT * FROM " . $this->table . " WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $userId);
+        $stmt->execute();
+
+        return $stmt->fetchObject();
+    }
+
     public function store() {
         $query = "INSERT INTO $this->table (username, password, email) VALUES (:username, :password, :email)";
         $stmt = $this->conn->prepare($query);
