@@ -34,6 +34,37 @@ class User {
         return $stmt->fetchObject();
     }
 
+    public function update($userId, $userData) {
+        $fields = [];
+
+        foreach($userData as $key => $value) {
+            $fields[] = "{$key} = :{$key}";
+        }
+
+        $query = "UPDATE $this->table SET " . implode(', ', $fields) . " WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        foreach($userData as $key => $value) {
+            // // my solution
+            // if($key == "birthday" && !$value) {
+            //     $stmt->bindValue(":{$key}", "1970-01-01");
+            // }
+            // else{
+            //     $stmt->bindValue(":{$key}", $value);
+            // }
+            
+            if($value === '') {
+                $stmt->bindValue(":{$key}", null, PDO::PARAM_NULL);
+            } else {
+                $stmt->bindValue(":{$key}", $value);
+            }
+        }
+
+        $stmt->bindValue(':id', $userId, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
     public function store() {
         $query = "INSERT INTO $this->table (username, password, email) VALUES (:username, :password, :email)";
         $stmt = $this->conn->prepare($query);

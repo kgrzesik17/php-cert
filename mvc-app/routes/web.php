@@ -22,5 +22,6 @@ $routes = [
         '/register' => "UserController@register",
         '/login' => "UserController@loginUser",
         '/logout' => "UserController@logout",
+        '/admin/user/update' => 'UserController@updateProfile',
     ]
 ];

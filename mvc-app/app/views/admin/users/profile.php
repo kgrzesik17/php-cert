@@ -1,5 +1,3 @@
-<?php var_dump($user); ?>
-
 <div class="row">
     <div class="col-md-3">
         
@@ -109,11 +107,11 @@
 
                     <!-- Settings Tab -->
                     <div class="tab-pane active" id="settings">
-                        <form action="#" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                        <form action="<?php echo base_url('/admin/user/update') ?>" class="form-horizontal" method="POST" enctype="multipart/form-data">
                             <div class="form-group row">
                                 <label for="inputUsername" class="col-sm-2 col-form-label">Username</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputUsername" name="username" value="<?php echo $user->username; ?>" placeholder="Username">
+                                    <input disabled type="text" class="form-control" id="inputUsername" name="username" value="<?php echo $user->username; ?>" placeholder="Username">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -155,7 +153,7 @@
                             <div class="form-group row">
                                 <label for="inputLocation" class="col-sm-2 col-form-label">Location</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputLocation" name="location" value="New York, USA" placeholder="<?php echo $user->location; ?>">
+                                    <input type="text" class="form-control" id="inputLocation" name="location" value="<?php echo $user->location; ?>" placeholder="<?php echo $user->location; ?>">
                                 </div>
                             </div>
                             <div class="form-group row">

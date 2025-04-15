@@ -30,6 +30,36 @@ class UserController {
         }
     }
 
+    public function updateProfile() {
+        $userId = $_SESSION['user_id'];
+
+        $firstName = sanitize($_POST['first_name'] ?? '');
+        $lastName = sanitize($_POST['last_name'] ?? '');
+        $email = sanitize($_POST['email'] ?? '');
+        $phone = sanitize($_POST['phone'] ?? '');
+        $birthday = sanitize($_POST['birthday'] ?? '');
+        $organization = sanitize($_POST['organization'] ?? '');
+        $location = sanitize($_POST['location'] ?? '');
+
+        var_dump($birthday);
+
+        $userData = [
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'email' => $email,
+            'phone' => $phone,
+            'birthday' => $birthday,
+            'organization' => $organization,
+            'location' => $location
+        ];
+
+        $updateStatus = $this->userModel->update($userId, $userData);
+
+        redirect('admin/users/profile');
+
+        
+    }
+
     public function showLoginForm() {
         $data = [
             'title' => 'Login'
@@ -41,8 +71,6 @@ class UserController {
     public function showProfile() {
         $userId = $_SESSION['user_id'];
         $user = $this->userModel->getUserById($userId);
-
-        var_dump($user);
 
         $data = [
             'title' => "Profile",
