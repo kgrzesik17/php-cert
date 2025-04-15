@@ -38,6 +38,14 @@ class UserController {
         render('user/login', $data);
     }
 
+    public function showProfile() {
+        $data = [
+            'title' => "Profile"
+        ];
+
+        render('admin/users/profile', $data, 'layouts/admin_layout');
+    }
+
     public function loginUser() {
         $this->userModel->email = $_POST['email'];
         $this->userModel->password = $_POST['password'];

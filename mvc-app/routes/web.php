@@ -13,8 +13,9 @@ $routes = [
         '/contact' => 'HomeController@contact',
         '/user/register' => 'UserController@showRegisterForm',
         '/user/login' => 'UserController@showLoginForm',
-        '/dashboard' => 'AdminController@dashboard',
+        '/dashboard' => 'AdminController@dashboard',  // bad! should be /admin/dashboard 
         '/admin' => 'AdminController@admin',
+        '/admin/users/profile' => 'UserController@showProfile',
     ],
     
     'POST' => [
