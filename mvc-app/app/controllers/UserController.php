@@ -53,10 +53,25 @@ class UserController {
             'location' => $location
         ];
 
+        if(isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
+            $imagePath = $this->userModel->handleImageUpload($_FILES['profile_image']);
+
+            if($imagePath) {
+                $userData['profile_image'] = $imagePath;
+            } else {
+                $_SESSION['error'] = 'FAILED to upload image';
+                redirect('/admin/users/profile');
+            }
+        }
+
         $updateStatus = $this->userModel->update($userId, $userData);
 
         redirect('admin/users/profile');
 
+        
+    }
+
+    public function handleImageUpload($file) {
         
     }
 
