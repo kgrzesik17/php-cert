@@ -45,6 +45,8 @@ class UserController {
         if($this->userModel->login()) {
             $_SESSION['username'] = $this->userModel->username;
             $_SESSION['id'] = $this->userModel->id;
+            $_SESSION['first_name'] = $this->userModel->first_name;
+            $_SESSION['last_name'] = $this->userModel->last_name;
             redirect('/dashboard');
         } else {
             echo "There was an error";

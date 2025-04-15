@@ -82,3 +82,11 @@ function sanitize($value) {
 function isLoggedIn() {
     return isset($_SESSION['id']);
 }
+
+function getUserFullName(){
+    if(isset($_SESSION['first_name']) && isset($_SESSION['last_name'])) {
+        return $_SESSION['first_name'] . ' ' . $_SESSION['last_name'];
+    } else {
+        return $_SESSION['username'];
+    }
+}
