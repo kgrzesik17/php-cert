@@ -51,4 +51,10 @@ class UserController {
         }
 
     }
+
+    public function logout() {
+        $_SESSION = [];
+        session_destroy();
+        redirect('/user/login');
+    }
 }

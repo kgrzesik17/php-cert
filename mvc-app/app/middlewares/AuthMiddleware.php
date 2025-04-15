@@ -8,4 +8,10 @@ class AuthMiddleware {
 
         return isset($_SESSION['id']) && !empty($_SESSION['id']);
     }
+
+    public static function requiredLogin() {
+        if(!self::isAuthenticated()) {
+            redirect('/user/login');
+        }
+    }
 }
