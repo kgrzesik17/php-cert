@@ -7,11 +7,13 @@ class AdminController {
     }
 
     public function dashboard() {
-        $data = [
-            'title' => 'Dashboard',
-            'message' => 'Welcome to the Dashboard'
-        ];
+        var_dump(AuthMiddleware::isAuthenticated());
 
-        render('admin/dashboard', $data, 'layouts/admin_layout');
+        // $data = [
+        //     'title' => 'Dashboard',
+        //     'message' => 'Welcome to the Dashboard'
+        // ];
+
+        // render('admin/dashboard', $data, 'layouts/admin_layout');
     }
 }
