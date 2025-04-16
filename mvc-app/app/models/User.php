@@ -70,6 +70,18 @@ class User {
         return $stmt->execute();
     }
 
+    public function updatePassword($userId, $password) {
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+        $query = "UPDATE {$this->table} SET password = :password WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
+
+        return $stmt->execute();
+    }
+
     public function handleImageUpload($file) {
         $maxSize = 5 * 1024 * 1024;  // max file size 5MB
         $tempLocation = $file['tmp_name'];  // temporary file location

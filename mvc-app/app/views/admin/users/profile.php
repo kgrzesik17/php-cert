@@ -57,7 +57,6 @@
             </div>
         <?php endif; ?>
 
-
         <div class="card">
             <div class="card-header p-2">
                 <ul class="nav nav-pills">
