@@ -78,6 +78,10 @@ class UserController {
         redirect('/admin/users/profile');
     }
 
+    public function updateUserProfilePassword() {
+        var_dump($_POST);
+    }
+
     public function showLoginForm() {
         $data = [
             'title' => 'Login'
