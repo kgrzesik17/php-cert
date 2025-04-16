@@ -57,14 +57,7 @@
             </div>
         <?php endif; ?>
 
-        <?php if(isset($_SESSION['message'])): ?>
-            <div class="alert alert-success">
-                <?php 
-                    echo $_SESSION['message'];
-                    unset($_SESSION['message']);
-                ?>
-            </div>
-        <?php endif; ?>
+
         <div class="card">
             <div class="card-header p-2">
                 <ul class="nav nav-pills">
@@ -229,3 +222,15 @@ $scripts = [
 ];
 
 ?>
+
+<?php if(isset($_SESSION['message'])): ?>
+    <?php $message = $_SESSION['message']; ?>
+
+    <script>
+        $(document).ready(function() {
+            <?php echo "toastr.success('{$message}')"; ?>
+        })
+    </script>
+
+    <?php unset($_SESSION['message']); ?>
+<?php endif; ?>
