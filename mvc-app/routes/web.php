@@ -5,6 +5,9 @@
 //     'about' => 'HomeController@about',
 //     'user/register' => 'UserController@register',
 // ];
+$router = new Router();
+
+$router->get('/user/test', 'UserController@test');
 
 $routes = [
     'GET' => [

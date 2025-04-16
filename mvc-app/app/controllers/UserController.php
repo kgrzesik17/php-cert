@@ -69,7 +69,7 @@ class UserController {
 
         if($updateStatus) {
             setSessionMessage('message', 'Profile updated successfully');
-            $_SESSION['active_tab'] = '#settings';  // pointing out which tab was used before
+            $_SESSION['active_tab'] = '`#settings`';  // pointing out which tab was used before
 
             // $_SESSION['message'] = "Profile updated successfully";
         } else {
@@ -146,5 +146,9 @@ class UserController {
         $_SESSION = [];
         session_destroy();
         redirect('/user/login');
+    }
+
+    public function test() {
+        echo "WORKS";
     }
 }

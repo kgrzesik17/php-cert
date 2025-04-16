@@ -16,8 +16,8 @@ if(isset($routes[$method][$request])) {
     $controllerInstance = new $controller;
     $controllerInstance->$action();
 } else {
-    http_response_code(404);
-    echo "404 Not found";
+    // http_response_code(404);
+    // echo "404 Not found";
 }
 
 // if(array_key_exists($request, $routes)) {
