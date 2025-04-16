@@ -60,7 +60,7 @@ class UserController {
             if($imagePath) {
                 $userData['profile_image'] = $imagePath;
             } else {
-                $_SESSION['error'] = 'FAILED to upload image';
+                setSessionMessage('error', 'FAILED to upload image');;
                 redirect('/admin/users/profile');
             }
         }
@@ -68,9 +68,11 @@ class UserController {
         $updateStatus = $this->userModel->update($userId, $userData);
 
         if($updateStatus) {
-            $_SESSION['message'] = "Profile updated successfully";
+            setSessionMessage('message', 'Profile updated successfully');
+
+            // $_SESSION['message'] = "Profile updated successfully";
         } else {
-            $_SESSION['error'] = "Failed to update profile";
+            setSessionMessage('error', 'Failed to update profile');
         }
 
         redirect('/admin/users/profile');
