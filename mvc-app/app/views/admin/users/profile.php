@@ -217,3 +217,15 @@
     </div>
     <!-- /.col -->
 </div>
+
+<?php 
+
+$styles = [
+    'plugins/toastr/toastr.min.css',
+];
+
+$scripts = [
+    'plugins/toastr/toastr.min.js',
+];
+
+?>
