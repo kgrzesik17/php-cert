@@ -79,7 +79,29 @@ class UserController {
     }
 
     public function updateUserProfilePassword() {
-        var_dump($_POST);
+        $userId = $_SESSION['user_id'];
+        $newPassword = sanitize($_POST['new_password']);
+        $confirmPassword = sanitize($_POST['confirm_password']);
+
+        if(empty($newPassword) || empty($confirmPassword)) {
+            setSessionMessage('error', 'Please fill all the required fields');
+            redirect('/admin/users/profile');
+        }
+
+        if($newPassword !== $confirmPassword) {
+            setSessionMessage('error', "Passwords don't match");
+            redirect('/admin/users/profile');
+        }
+
+        $updateStatus = $this->userModel->updatePassword($userId, $newPassword);
+
+        if($updateStatus) {
+            setSessionMessage('message', 'Password updated successfully');
+        } else {
+            setSessionMessage('error', 'Failed to update password');
+        }
+
+        redirect('/admin/users/profile');
     }
 
     public function showLoginForm() {
