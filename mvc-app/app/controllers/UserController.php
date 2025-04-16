@@ -69,6 +69,7 @@ class UserController {
 
         if($updateStatus) {
             setSessionMessage('message', 'Profile updated successfully');
+            $_SESSION['active_tab'] = '#settings';  // pointing out which tab was used before
 
             // $_SESSION['message'] = "Profile updated successfully";
         } else {
@@ -97,6 +98,7 @@ class UserController {
 
         if($updateStatus) {
             setSessionMessage('message', 'Password updated successfully');
+            $_SESSION['active_tab'] = '#password';  // pointing out which tab was used before
         } else {
             setSessionMessage('error', 'Failed to update password');
         }
