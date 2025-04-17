@@ -6,8 +6,9 @@
 //     'user/register' => 'UserController@register',
 // ];
 $router = new Router();
-
 $router->get('/user/test', 'UserController@test');
+
+$router->dispatch();
 
 $routes = [
     'GET' => [
