@@ -6,7 +6,7 @@
 //     'user/register' => 'UserController@register',
 // ];
 $router = new Router();
-$router->get('/user/test', 'UserController@test');
+$router->get('/user/test{id}', 'UserController@test');
 
 $router->dispatch();
 

@@ -24,7 +24,9 @@ class Router {
         $cleanedRequest = $this->formatRoute($requestUri);
 
         foreach($this->routes[$method] as $route => $handler) {
-            var_dump($handler);
+            $pattern = preg_replace('#\{[a-zA-Z0-9_]+}#', '([a-zA-Z0-9_]+)', $route);
+
+            var_dump($pattern);
         }
     }
 }
