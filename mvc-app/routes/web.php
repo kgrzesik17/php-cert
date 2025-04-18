@@ -8,6 +8,8 @@
 
 $router = new Route();
 
+$router->dispatch();
+
 $router->get('/user/test', 'UserController@test');
 
 $routes = [
