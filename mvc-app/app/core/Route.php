@@ -3,7 +3,7 @@
 // router
 class Route {
     protected $routes = [
-        'GET' => ['/user/test' => 'UserController@test'],
+        'GET' => [],
         'POST' => [],
     ];
 
@@ -27,7 +27,9 @@ class Route {
         $cleanedRequest = $this->formatRoute($requestUri);
 
         foreach($this->routes[$method] as $route => $handler) {
+            $pattern = preg_replace('#\{[a-zA-Z0-9_]+}#', '([a-zA-Z0-9_]+)', $route);
             
+            var_dump($pattern);
         }
     }
 }

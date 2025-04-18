@@ -7,6 +7,7 @@
 // ];
 
 $router = new Route();
+$router->get('/user/test/{id}', 'UserController@test');
 
 $router->dispatch();
 
