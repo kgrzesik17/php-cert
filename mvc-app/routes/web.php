@@ -5,10 +5,10 @@
 //     'about' => 'HomeController@about',
 //     'user/register' => 'UserController@register',
 // ];
-$router = new Router();
-$router->get('/user/test{id}', 'UserController@test');
 
-$router->dispatch();
+$router = new Route();
+
+$router->get('/user/test', 'UserController@test');
 
 $routes = [
     'GET' => [
